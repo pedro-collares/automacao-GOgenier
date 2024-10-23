@@ -4,7 +4,8 @@ import time
 import data_source as d
 import models as m
 import agents as a
-
+import playground as p
+import integration as i
 
 
 def run(playwright: Playwright) -> None:
@@ -15,32 +16,23 @@ def run(playwright: Playwright) -> None:
     page.goto("https://app.genier.ai/qa/")
 
 
-    for i in [d,m,a]:
-        i.set_page(page)
+    for j in [d,m,a,p,i]:
+        j.set_page(page)
 
-         
-
-    # logar
     def login():
         page.get_by_label("Nome de usuário").fill("pedro")
         page.get_by_label("Senha").fill("@Collares123")
         page.get_by_test_id("stBaseButton-secondaryFormSubmit").click()
+        time.sleep(2)
         
-    
-
-    
-
     login()
-    time.sleep(2)
     # d.manage_data()
     # m.manage_model()
-    a.manage_agents()
-    time.sleep(30)
+    # a.manage_agents()
+    # p.play_ground()
+    i.manage_integration()
 
-
-
-
-
+    time.sleep(300)
 
     # ---------------------
     # context.close()

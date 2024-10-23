@@ -15,6 +15,7 @@ def save_inteligence():
     
 def save_agent():
     page.get_by_role("button", name="save icon Salvar").click()
+    time.sleep(2)
 
 def description():
     page.locator("div").filter(has_text=re.compile(r"^Fortics$")).first.click()
@@ -40,18 +41,18 @@ def create_agent(name):
 def rules(rules):
     page.get_by_label("Outras regras e instruções").fill(rules)
 
-def consultation():
+def consultation(field):
     consultation = page.get_by_role("button", name="manage_search icon").click()
     # page.get_by_test_id("stDialog").get_by_test_id("stSelectbox").locator("div").filter(has_text="Escolha uma coleção").nth(2).click()
-    collection = page.get_by_label("Coleção").fill("medico")
+    collection = page.get_by_label("Coleção").fill(field)
     page.get_by_label("Coleção").press("Enter")
     save_collection = page.get_by_test_id("stBaseButton-secondary").click()
 
 def register():
-    register = page.get_by_role("button", name="manage_search icon").click()
-    collection = page.get_by_label("Coleção").fill("Clientes")
+    register = page.get_by_role("button", name="1 manage_search icon").click()
+    collection = page.get_by_label("Coleção").fill("automation")
     page.get_by_label("Coleção").press("Enter")
-    fields = page.get_by_label("Selecione os campos").fill("nome")
+    fields = page.get_by_label("Selecione os campos").fill("name")
     page.get_by_label("Selecione os campos").press("Enter")
     save_collection = page.get_by_test_id("stBaseButton-secondary").click()
 
@@ -59,22 +60,23 @@ def config_flow():
     page.get_by_label("Caminho (proxy)").fill("/playwright/")
 
 
-def add_inteligence(inteligence):
+def add_inteligence(inteligence, collection=None):
     page.get_by_label("Tipo de ação").fill(inteligence)
     page.get_by_label("Tipo de ação").press("Enter")
     page.get_by_role("button", name="add icon").click()
 
     if inteligence == "Utilizar modelo":
+        rules("Responda tudo que o usuário solicitar")
         description()
     elif inteligence == "Data e hora":
         rules("offset de -3")
     elif inteligence == "Busca em banco de da":
         rules("Responda tudo que o usuário solicitar")
-        consultation()
+        consultation(collection)
     elif inteligence == "Insere em banco de da" :
-        rules("Registre o usuario no banco de dados")
         register()
     elif inteligence == "Genier":
+        rules("Acione o Flow quando o usuário solicitar e informe seu estado")
         config_flow()
 
     save_inteligence()
@@ -93,11 +95,13 @@ def create_agent_with_dataset():
 
 def create_agent_with_consultation_database():
     create_agent("Agente de consulta database")
-    add_inteligence("Busca em banco de da")
+    add_inteligence("Busca em banco de da", "medicos")
     save_agent()
 
 def create_agent_with_register_database():
     create_agent("Agente de cadastro database")
+    add_inteligence("Busca em banco de da", "automation")
+    time.sleep(5)
     add_inteligence("Insere em banco de da")
     save_agent()
 
