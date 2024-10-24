@@ -7,6 +7,7 @@ import agents as a
 import playground as p
 import integration as i
 import config as c
+import login as l
 
 
 def run(playwright: Playwright) -> None:
@@ -17,16 +18,12 @@ def run(playwright: Playwright) -> None:
     page.goto("https://app.genier.ai/qa/")
 
 
-    for j in [d,m,a,p,i,c]:
+    for j in [d,m,a,p,i,c,l]:
         j.set_page(page)
 
-    def login():
-        page.get_by_label("Nome de usuário").fill("automacao")
-        page.get_by_label("Senha").fill("Automac@o123")
-        page.get_by_test_id("stBaseButton-secondaryFormSubmit").click()
-        time.sleep(2)
+    
 
-    login()
+    l.login("Automac@o123")
     # d.manage_data()
     # m.manage_model()
     # a.manage_agents()
@@ -37,6 +34,7 @@ def run(playwright: Playwright) -> None:
 
     # c.change_llm()
     c.change_password()
+    # login (alterar func de login pra ter parametros e passar os novos)
 
     time.sleep(300)
 

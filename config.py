@@ -3,6 +3,9 @@ from playwright.sync_api import Playwright, sync_playwright, expect
 import time
 import pytesseract
 from PIL import Image
+import login as l
+
+
 page = None
 
 def change_frame(menu):
@@ -20,7 +23,9 @@ def resolve_captcha():
     captcha = pytesseract.image_to_string(Image.open('captcha.png'))
     return captcha
 
-def register_user():
+
+# unfunctional because captcha is unreadable (just paying a 2captcha api key)
+def new_user():
     change_frame("Configurações")
     # abrir o expander de usuarios
     page.locator("summary").filter(has_text="Cadastro de usuário").click()
@@ -53,10 +58,23 @@ def change_llm():
     page.get_by_test_id("stRadio").locator("label").filter(has_text="OpenAI").click()
     page.get_by_role("button", name="Salvar").click()
 
+def new_pass(old_pass, new_pass):
+        change_frame("Configurações")
+        page.locator("summary").filter(has_text="Troca de senha").click()
+        page.get_by_label("Senha atual").fill(old_pass)
+        page.get_by_label("Senha nova", exact=True).fill(new_pass)
+        page.get_by_label("Repita a senha nova").fill(new_pass)
+        page.get_by_role("button", name="Trocar").click()
+        time.sleep(3)
+
 
 def change_password():
-     time.sleep(1)
 
+    new_pass("Automac@o123", "Automac@o321")    
+
+    page.get_by_test_id("stSidebarUserContent").get_by_test_id("stBaseButton-secondary").click()
+    l.login("Automac@o321")
+    new_pass("Automac@o321", "Automac@o123")
 
 
 def set_page(main_page):
