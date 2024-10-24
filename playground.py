@@ -22,8 +22,8 @@ def search():
 
 def copilot():
     copilot = page.locator("label").filter(has_text="Copilot").click()
-    choose_model = page.get_by_label("Selected Fortics. **Modelos**").fill("Modelo de tes")
-    choose_model = page.get_by_label("Selected Fortics. **Modelos**").press("Enter")
+    # choose_model = page.get_by_label("Selected Fortics. **Modelos**").fill("Modelo de tes")
+    # choose_model = page.get_by_label("Selected Fortics. **Modelos**").press("Enter")
     time.sleep(2)
     ask_copilot = page.get_by_test_id("stChatInputTextArea").fill("O que é o GOgenier?") 
     ask_copilot = page.get_by_test_id("stChatInputTextArea").press("Enter") 
@@ -31,8 +31,8 @@ def copilot():
 
 def chat():
     chat= page.locator("label").filter(has_text="Chat").click()
-    choose_model = page.get_by_label("Selected Fortics. **Modelos**").fill("Modelo de tes")
-    choose_model = page.get_by_label("Selected Fortics. **Modelos**").press("Enter")
+    # choose_model = page.get_by_label("Selected Fortics. **Modelos**").fill("Modelo de tes")
+    # choose_model = page.get_by_label("Selected Fortics. **Modelos**").press("Enter")
     time.sleep(2)
     ask_copilot = page.get_by_test_id("stChatInputTextArea").fill("O que é o GOgenier?") 
     ask_copilot = page.get_by_test_id("stChatInputTextArea").press("Enter") 
@@ -53,17 +53,24 @@ def stt():
     time.sleep(10)
 
 
+def talk_to_agent(agent, question):
+    select_agent = page.get_by_label("Escolha um agente para").fill(agent)
+    select_agent = page.get_by_label("Escolha um agente para").press("Enter")
+    time.sleep(2)
+    asking = page.get_by_test_id("stChatInputTextArea").fill(question)
+    asking = page.get_by_test_id("stChatInputTextArea").press("Enter")
+    time.sleep(15)
+
+def talk_to_model():
+    change_frame("Home")
+    time.sleep(5)
+    change_frame("Playground")
+    search()
+
     # when its a tenant specifically for testing, create a loop to talk with all agents
 def agents():
     agents = page.locator("label").filter(has_text="Agentes").click()
 
-    def talk_to_agent(agent, question):
-        select_agent = page.get_by_label("Escolha um agente para").fill(agent)
-        select_agent = page.get_by_label("Escolha um agente para").press("Enter")
-        time.sleep(2)
-        asking = page.get_by_test_id("stChatInputTextArea").fill(question)
-        asking = page.get_by_test_id("stChatInputTextArea").press("Enter")
-        time.sleep(15)
 
     def talk_to_db():
         talk_to_agent("Agente de cadastro database", "Sou o Pedro, me registre em seu banco de dados")
@@ -71,7 +78,7 @@ def agents():
 
         message = page.get_by_test_id("stChatMessage").nth(1).text_content()
         if "Você foi registrado com sucesso" not in message:
-            print("deu pau no cadastrodo db")
+            print("deu pau no cadastro do db")
         else:
             talk_to_agent("Agente de cadastro database", "Agora quero consultar esse banco de dados")
             print("passou no registro")
@@ -94,12 +101,12 @@ def agents():
         else:
             print("deu boa")
 
-
-    # talk_to_agent("Agente de teste com modelo", "o que é o gogenier")
+    talk_to_agent("Agente de teste com modelo", "o que e o gogenier?")    
     # talk_to_agent("Agente de teste com dataset", "que dia é hoje e que horas sao")
     # talk_to_agent("Agente de teste CNPJ", "valide o cnpj: 54.463.890/0001-05")
     # talk_to_db()
-    talk_to_flow()
+    # talk_to_flow()
+
 
 
 def play_ground():
@@ -109,11 +116,11 @@ def play_ground():
         change_frame("Home")
         change_frame("Playground")
 
-    # search()
-    # copilot()
-    # chat()
-    # insights()
-    # stt()
+    search()
+    copilot()
+    chat()
+    insights()
+    stt()
     agents()
 
 def set_page(main_page):
