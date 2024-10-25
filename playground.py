@@ -40,11 +40,11 @@ def chat():
 
 def insights():
     insights = page.locator("label").filter(has_text="Insights").click()
-    choose_pipeline = page.get_by_label("Selected Escolha um pipeline").fill("insights")
+    choose_pipeline = page.get_by_label("Selected Escolha um pipeline").fill("Insights")
     choose_pipeline = page.get_by_label("Selected Escolha um pipeline").press("Enter")
     time.sleep(2)
     up_file("audio.flac")
-    time.sleep(15)
+    time.sleep(20)
 
 def stt():
     stt = page.locator("label").filter(has_text="STT").click()
@@ -59,7 +59,7 @@ def talk_to_agent(agent, question):
     time.sleep(2)
     asking = page.get_by_test_id("stChatInputTextArea").fill(question)
     asking = page.get_by_test_id("stChatInputTextArea").press("Enter")
-    time.sleep(15)
+    time.sleep(10)
 
 def talk_to_model():
     change_frame("Home")
@@ -72,15 +72,15 @@ def agents():
     agents = page.locator("label").filter(has_text="Agentes").click()
 
 
-    def talk_to_db():
-        talk_to_agent("Agente de cadastro database", "Sou o Pedro, me registre em seu banco de dados")
+    def talk_to_db(agent):
+        talk_to_agent(agent, "Sou o Pedro, me registre em seu banco de dados")
         time.sleep(5)
 
         message = page.get_by_test_id("stChatMessage").nth(1).text_content()
-        if "Você foi registrado com sucesso" not in message:
+        if "foi registrado com sucesso" not in message:
             print("deu pau no cadastro do db")
         else:
-            talk_to_agent("Agente de cadastro database", "Agora quero consultar esse banco de dados")
+            talk_to_agent(agent, "Agora quero consultar esse banco de dados")
             print("passou no registro")
 
             message2 = page.get_by_test_id("stChatMessage").nth(3).text_content()
@@ -91,21 +91,42 @@ def agents():
         time.sleep(15)
 
 
-    def talk_to_flow():
-        talk_to_agent("Agente de teste Flow", "acione o flow e envie esta mensagem")
+    def talk_to_flow(agent):
+        talk_to_agent(agent, "acione o flow e envie esta mensagem: 'civic 1995 com aerofolio' ")
         time.sleep(4)
 
         message = page.get_by_test_id("stChatMessage").nth(1).text_content()
         if "O flow foi acionado com" not in message:
             print("deu pau na chamada do flow")
         else:
-            print("deu boa")
+            print("Flow esta funcionando")
+    
+    def talk_agent_with_flow_db_model():
+        time.sleep(1)
+        talk_to_flow("Agente com flow + db + modelo ")
 
-    talk_to_agent("Agente de teste com modelo", "o que e o gogenier?")    
-    # talk_to_agent("Agente de teste com dataset", "que dia é hoje e que horas sao")
-    # talk_to_agent("Agente de teste CNPJ", "valide o cnpj: 54.463.890/0001-05")
-    # talk_to_db()
-    # talk_to_flow()
+        talk_to_agent("Agente com flow + db + modelo", "Sou o Pedro, me registre em seu banco de dados")
+        time.sleep(5)
+        message = page.get_by_test_id("stChatMessage").nth(3).text_content()
+        if "foi registrado com sucesso" not in message:
+            print("deu pau no cadastro do db")
+        else:
+            print("Cadastro do db esta funcionando")
+
+        talk_to_agent("Agente com flow + db + modelo ", "o que é o gogenier?")
+        message2 = page.get_by_test_id("stChatMessage").nth(5).text_content()
+        if "poderoso modelo de linguagem projetado para gerar conteúdo" or "conteúdo original e de alta qualidade de forma automatizada" not in message2:
+            print("deu pau no modelo")
+        else:
+            print("tudo funcionando")
+
+
+    # talk_to_agent("Agente de teste com modelo", "o que e o gogenier?")    
+    talk_to_agent("Agente de teste com dataset", "que dia é hoje e que horas sao")
+    talk_to_agent("Agente de teste CNPJ", "valide o cnpj: 54.463.890/0001-05")
+    # talk_to_db("Agente de cadastro database")
+    # talk_to_flow("Agente de teste Flow")
+    talk_agent_with_flow_db_model()
 
 
 

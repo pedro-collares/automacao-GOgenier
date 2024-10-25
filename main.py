@@ -9,7 +9,6 @@ import integration as i
 import config as c
 import login as l
 
-
 def run(playwright: Playwright) -> None:
 
     browser = playwright.chromium.launch(headless=False)
@@ -22,21 +21,19 @@ def run(playwright: Playwright) -> None:
         j.set_page(page)
 
     
-
     l.login("Automac@o123")
-    # d.manage_data()
-    # m.manage_model()
-    # a.manage_agents()
-    # p.play_ground()
-    # d.remove_data()
-    # m.reprocess()
-    # p.talk_to_model()
+    d.manage_data()
+    m.manage_model()
+    a.manage_agents()
+    p.play_ground()
+    d.remove_data()
+    m.reprocess()
+    p.talk_to_model()
 
-    # c.change_llm()
+    c.change_llm()
     c.change_password()
-    # login (alterar func de login pra ter parametros e passar os novos)
 
-    time.sleep(300)
+    time.sleep(1200)
 
     # ---------------------
     context.close()

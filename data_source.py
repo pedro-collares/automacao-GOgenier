@@ -12,7 +12,7 @@ def change_frame(menu):
 def type_of_data(type):
     page.get_by_role("combobox", name="Selected Opções de fonte de").fill(type)
     press_enter()
-    
+
 def press_enter():
     page.get_by_role("combobox", name="Selected Opções de fonte de").press("Enter")
 

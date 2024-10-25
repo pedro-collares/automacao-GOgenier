@@ -4,14 +4,18 @@ import time
 
 page = None
 
+def save_inteligence():
+    save_buttons = page.locator("button[data-testid='stBaseButton-secondaryFormSubmit']").filter(has_text=re.compile(r"^save \d+$"))
+    for i in range(save_buttons.count()):
+        save_buttons.nth(i).click()
+        page.wait_for_timeout(1000)
+
 def change_frame(menu):
        page.get_by_test_id("stSidebarUserContent").frame_locator("[data-testid=\"stCustomComponentV1\"]").get_by_role("link", name=menu).click() 
 
 def press_enter():
     page.get_by_label("Selected Fortics. Modelo").press("Enter")
 
-def save_inteligence():
-     page.get_by_role("button", name="save icon 1").click()
     
 def save_agent():
     page.get_by_role("button", name="save icon Salvar").click()
@@ -27,9 +31,11 @@ def description():
     page.get_by_role("button", name="save icon 1").click()
 
 def create_agent(name):
+    change_frame("Agente")
+    time.sleep(2)    
     change_frame("Cadastro de agentes")
     add = page.locator('button[data-testid="stBaseButton-secondary"]').nth(0).click()
-    name = page.get_by_label("De um nome para seu agente").fill(name)
+    nome = page.get_by_label("De um nome para seu agente").fill(name)
     save = page.get_by_test_id("stDialog").get_by_test_id("stBaseButton-secondary").click()
     time.sleep(3)
     config = page.get_by_text("settings_applicationsConfigurações do agente").click()
@@ -58,6 +64,7 @@ def register():
 
 def config_flow():
     page.get_by_label("Caminho (proxy)").fill("/playwright/")
+    time.sleep(2)
 
 
 def add_inteligence(inteligence, collection=None):
@@ -66,7 +73,7 @@ def add_inteligence(inteligence, collection=None):
     page.get_by_role("button", name="add icon").click()
 
     if inteligence == "Utilizar modelo":
-        rules("Responda tudo que o usuário solicitar")
+        rules("Responda tudo que o usuário solicitar\n")
         description()
     elif inteligence == "Data e hora":
         rules("offset de -3")
@@ -87,16 +94,16 @@ def create_agent_with_model():
     create_agent("Agente de teste com modelo")
     add_inteligence("Utilizar modelo")
     save_agent()
+    change_frame("Home")
+    time.sleep(3)
+
 
 def create_agent_with_dataset():
     create_agent("Agente de teste com dataset")
     add_inteligence("Data e hora")
     save_agent()
-
-def create_agent_with_consultation_database():
-    create_agent("Agente de consulta database")
-    add_inteligence("Busca em banco de da", "medicos")
-    save_agent()
+    change_frame("Home")
+    time.sleep(3)
 
 def create_agent_with_register_database():
     create_agent("Agente de cadastro database")
@@ -104,27 +111,48 @@ def create_agent_with_register_database():
     time.sleep(5)
     add_inteligence("Insere em banco de da")
     save_agent()
+    change_frame("Home")
+    time.sleep(3)
 
 def create_agent_with_cnpj():
     create_agent("Agente de teste CNPJ")
     add_inteligence("Validação de CN")
     save_agent()
+    change_frame("Home")
+    time.sleep(3)
 
 def create_agent_with_flow():
     create_agent("Agente de teste Flow")
     add_inteligence("Genier")
     save_agent()
+    change_frame("Home")
+    time.sleep(3)
+
+def agent_with_flow_db_model():
+    create_agent("Agente com flow + db + modelo ")
+    add_inteligence("Utilizar modelo")
+    time.sleep(2)
+    add_inteligence("Insere em banco de da")
+    time.sleep(2)
+    add_inteligence("Genier")
+    time.sleep(2)
+    rules("Responda tudo que o usuário solicitar\nAcione o Flow quando o usuário solicitar e informe seu estado\nAdicione o usuário ao database quando for solicitado")
+    save_agent()
+    change_frame("Home")
+    time.sleep(3)
 
 
 def manage_agents():
+    change_frame("Home")
+    time.sleep(3)
     change_frame("Agente")
 
-    create_agent_with_model()
-    # create_agent_with_dataset()
-    # create_agent_with_consultation_database()
+    # create_agent_with_model()
+    create_agent_with_dataset()
     # create_agent_with_register_database()
-    # create_agent_with_cnpj()
+    create_agent_with_cnpj()
     # create_agent_with_flow()
+    agent_with_flow_db_model()
 
 
 
