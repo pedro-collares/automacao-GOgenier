@@ -5,7 +5,7 @@ import os
 
 page = None
 
-def change_frame(menu):
+def menu(menu):
     time.sleep(5)
     page.get_by_test_id("stSidebarUserContent").frame_locator("[data-testid=\"stCustomComponentV1\"]").get_by_role("link", name=menu).click()   
 
@@ -27,7 +27,7 @@ def save_data():
 
     
 def clear_cache_ds():
-    change_frame("Fontes de dados")
+    menu("Fontes de dados")
     page.get_by_text("fonte de testes").click()
     page.get_by_role("button", name="folder_delete icon Limpar o").click()
 

@@ -8,7 +8,7 @@ import login as l
 
 page = None
 
-def change_frame(menu):
+def menu(menu):
        page.get_by_test_id("stSidebarUserContent").frame_locator("[data-testid=\"stCustomComponentV1\"]").get_by_role("link", name=menu).click() 
 
 def fields(field, data):
@@ -26,7 +26,7 @@ def resolve_captcha():
 
 # unfunctional because captcha is unreadable (just paying a 2captcha api key)
 def new_user():
-    change_frame("Configurações")
+    menu("Configurações")
     # abrir o expander de usuarios
     page.locator("summary").filter(has_text="Cadastro de usuário").click()
 
@@ -44,22 +44,22 @@ def new_user():
 
 
 def change_llm():
-    change_frame("Configurações")
+    menu("Configurações")
     page.get_by_role("tab", name="Configurações avançadas").click()
     page.locator("label").filter(has_text=re.compile(r"^Gemini$")).click()
     page.get_by_role("button", name="Salvar").click()
 
     time.sleep(2)
 
-    change_frame("Documentação")
+    menu("Documentação")
     time.sleep(2)
-    change_frame("Configurações")
+    menu("Configurações")
     page.get_by_role("tab", name="Configurações avançadas").click()
     page.get_by_test_id("stRadio").locator("label").filter(has_text="OpenAI").click()
     page.get_by_role("button", name="Salvar").click()
 
 def new_pass(old_pass, new_pass):
-        change_frame("Configurações")
+        menu("Configurações")
         page.locator("summary").filter(has_text="Troca de senha").click()
         page.get_by_label("Senha atual").fill(old_pass)
         page.get_by_label("Senha nova", exact=True).fill(new_pass)
@@ -69,7 +69,8 @@ def new_pass(old_pass, new_pass):
 
 
 def change_password():
-
+    menu("Configurações")
+    page.get_by_role("tab", name="Usuários").click()
     new_pass("Automac@o123", "Automac@o321")    
 
     page.get_by_test_id("stSidebarUserContent").get_by_test_id("stBaseButton-secondary").click()

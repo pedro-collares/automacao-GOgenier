@@ -5,7 +5,7 @@ import os
 
 page = None
 
-def change_frame(menu):
+def menu(menu):
        page.get_by_test_id("stSidebarUserContent").frame_locator("[data-testid=\"stCustomComponentV1\"]").get_by_role("link", name=menu).click() 
 
 def up_file(file):
@@ -62,9 +62,9 @@ def talk_to_agent(agent, question):
     time.sleep(10)
 
 def talk_to_model():
-    change_frame("Home")
+    menu("Home")
     time.sleep(5)
-    change_frame("Playground")
+    menu("Playground")
     search()
 
     # when its a tenant specifically for testing, create a loop to talk with all agents
@@ -132,10 +132,10 @@ def agents():
 
 def play_ground():
     try:
-        change_frame("Playground", timeout=2000)
+        menu("Playground", timeout=2000)
     except Exception:
-        change_frame("Home")
-        change_frame("Playground")
+        menu("Home")
+        menu("Playground")
 
     search()
     copilot()

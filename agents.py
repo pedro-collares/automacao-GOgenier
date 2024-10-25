@@ -10,7 +10,7 @@ def save_inteligence():
         save_buttons.nth(i).click()
         page.wait_for_timeout(1000)
 
-def change_frame(menu):
+def menu(menu):
        page.get_by_test_id("stSidebarUserContent").frame_locator("[data-testid=\"stCustomComponentV1\"]").get_by_role("link", name=menu).click() 
 
 def press_enter():
@@ -31,9 +31,9 @@ def description():
     page.get_by_role("button", name="save icon 1").click()
 
 def create_agent(name):
-    change_frame("Agente")
+    menu("Agente")
     time.sleep(2)    
-    change_frame("Cadastro de agentes")
+    menu("Cadastro de agentes")
     add = page.locator('button[data-testid="stBaseButton-secondary"]').nth(0).click()
     nome = page.get_by_label("De um nome para seu agente").fill(name)
     save = page.get_by_test_id("stDialog").get_by_test_id("stBaseButton-secondary").click()
@@ -94,7 +94,7 @@ def create_agent_with_model():
     create_agent("Agente de teste com modelo")
     add_inteligence("Utilizar modelo")
     save_agent()
-    change_frame("Home")
+    menu("Home")
     time.sleep(3)
 
 
@@ -102,7 +102,7 @@ def create_agent_with_dataset():
     create_agent("Agente de teste com dataset")
     add_inteligence("Data e hora")
     save_agent()
-    change_frame("Home")
+    menu("Home")
     time.sleep(3)
 
 def create_agent_with_register_database():
@@ -111,21 +111,21 @@ def create_agent_with_register_database():
     time.sleep(5)
     add_inteligence("Insere em banco de da")
     save_agent()
-    change_frame("Home")
+    menu("Home")
     time.sleep(3)
 
 def create_agent_with_cnpj():
     create_agent("Agente de teste CNPJ")
     add_inteligence("Validação de CN")
     save_agent()
-    change_frame("Home")
+    menu("Home")
     time.sleep(3)
 
 def create_agent_with_flow():
     create_agent("Agente de teste Flow")
     add_inteligence("Genier")
     save_agent()
-    change_frame("Home")
+    menu("Home")
     time.sleep(3)
 
 def agent_with_flow_db_model():
@@ -138,14 +138,14 @@ def agent_with_flow_db_model():
     time.sleep(2)
     rules("Responda tudo que o usuário solicitar\nAcione o Flow quando o usuário solicitar e informe seu estado\nAdicione o usuário ao database quando for solicitado")
     save_agent()
-    change_frame("Home")
+    menu("Home")
     time.sleep(3)
 
 
 def manage_agents():
-    change_frame("Home")
+    menu("Home")
     time.sleep(3)
-    change_frame("Agente")
+    menu("Agente")
 
     # create_agent_with_model()
     create_agent_with_dataset()

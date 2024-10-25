@@ -4,7 +4,7 @@ import time
 
 page = None
 
-def change_frame(menu):
+def menu(menu):
     page.get_by_test_id("stSidebarUserContent").frame_locator("[data-testid=\"stCustomComponentV1\"]").get_by_role("link", name=menu).click()   
 
 def create():
@@ -23,7 +23,7 @@ def create():
 
 
 def manage_integration():
-    change_frame("Integração")
+    menu("Integração")
     time.sleep(10)
     create()
 
