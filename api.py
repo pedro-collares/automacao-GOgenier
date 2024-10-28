@@ -1,6 +1,7 @@
 import asyncio
 from playwright.async_api import async_playwright
 import os
+import requests
 
 async def test_api():
     async with async_playwright() as p:
@@ -108,25 +109,31 @@ async def test_api():
 
         async def stt():
 
+            file_path = os.path.abspath("/home/pedro-collares/playwright/files/audio.flac")
+
             url = 'https://app.genier.ai/qa/api/stt_transcribe'
+
             headers = {
-                'Authorization': '17fe10f1-35a0-47cc-a631-9d33f408961a',
-                'Content-Type': 'multipart/form-data'
-            }
-            file_path = os.path.abspath(os.path.join("files", "audio.flac"))
+                'Authorization': '17fe10f1-35a0-47cc-a631-9d33f408961a'
+                }
             
-            # Crie um contexto de requisição
             request_context = await p.request.new_context()
-            
-            # Envie a requisição POST com o arquivo
-            response = await request_context.post(url, headers=headers, multipart={'file': open(file_path, 'rb')})
 
-
-            if response.status == 200: 
-                # json_response = await response.json()    
-                print("RESPOSTA DA API DO STT:", await response.json() , "\n")
-            else:
-                print(f"ERRO NA API DO STT {response.status}: {await response.text()}")
+            try:
+                with open(file_path, 'rb') as file:
+                    response = await request_context.post(url, headers=headers, multipart={'file': {
+                        'name': 'audio.flac', 
+                        'mimeType': 'audio/x-flac',  
+                        'buffer': file.read()
+                        }
+                    }
+                )
+                    if response.status == 200:
+                        print("RESPOSTA DA API DO STT:", await response.json(), "\n")
+                    else:
+                        print(f"ERRO NA API DO STT {response.status}: {await response.text()}")
+            except Exception as e:
+                print(f'Erro ao enviar o arquivo {e}')
 
         async def tts():
             request_context = await p.request.new_context()
@@ -149,8 +156,51 @@ async def test_api():
             else:
                 print(f"ERRO NA API DO TTS {response.status}: {await response.text()}")
 
-        async def playground():
-            
+        async def database():
+            request_context = await p.request.new_context()
+
+            url = "https://app.genier.ai/qa/godb/api/admins/auth-with-password"
+        
+            headers = {
+                "Authorization": "17fe10f1-35a0-47cc-a631-9d33f408961a",
+                'Cookie': '_9451f=2b943671967f49df'
+            }
+
+            data = {
+                "identity": "pedro.bigiunas@fortics.com.br",
+                "password": "@Collares123"
+            }
+
+            response = await request_context.post(url, headers=headers, data=data)
+
+            if response.status == 200: 
+                json_response = await response.json()
+                token = json_response.get("token")  
+                print("TOKEN DO DATABASE:", token, "\n")
+                return token
+            else:
+                print(f"ERRO NA API DO DATABASE {response.status}: {await response.text()}")
+                return None
+
+
+
+        async def list_db(token):
+            request_context = await p.request.new_context()
+
+            url = "https://app.genier.ai/qa/godb/api/collections/automation/records"
+        
+            headers = { 
+                'Authorization': f'Bearer {token}'
+                }
+
+            response = await request_context.get(url, headers=headers)
+
+            if response.status == 200: 
+                print("CONSULTA DO DATABASE:", await response.json() , "\n")
+            else:
+                print(f"ERRO NA API DO DATABASE {response.status}: {await response.text()}")
+
+
 
 
 
@@ -159,7 +209,10 @@ async def test_api():
         # await copilot()
         # await chat()
         # await search()
-        # await stt() dando erro
-        await tts()
+        # await stt() 
+        # await tts()
+        token = await database() 
+        if token:
+            await list_db(token)
 
 asyncio.run(test_api())
