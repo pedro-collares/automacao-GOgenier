@@ -1,7 +1,12 @@
 import asyncio
 from playwright.async_api import async_playwright
 import os
-import requests
+import base64
+import subprocess
+from playsound import playsound
+import io
+from pydub import AudioSegment
+from pydub.playback import play
 
 async def test_api():
     async with async_playwright() as p:
@@ -130,7 +135,7 @@ async def test_api():
                 )
                     if response.status == 200:
                         print("RESPOSTA DA API DO STT:", await response.json(), "\n")
-                    else:
+                    else:   
                         print(f"ERRO NA API DO STT {response.status}: {await response.text()}")
             except Exception as e:
                 print(f'Erro ao enviar o arquivo {e}')
@@ -152,7 +157,14 @@ async def test_api():
             response = await request_context.post(url, headers=headers, data=data)
 
             if response.status == 200: 
-                print("RESPOSTA DA API DO TTS:", await response.json() , "\n")
+                print("AUDIO TRANSCRITO: \n")
+                json_response = await response.json() 
+                audio_base64 = json_response.get("audio_content_base64") 
+                audio_bytes = base64.b64decode(audio_base64)
+
+                audio = AudioSegment.from_file(io.BytesIO(audio_bytes), format="mp3")
+                play(audio)
+
             else:
                 print(f"ERRO NA API DO TTS {response.status}: {await response.text()}")
 
@@ -176,7 +188,7 @@ async def test_api():
             if response.status == 200: 
                 json_response = await response.json()
                 token = json_response.get("token")  
-                print("TOKEN DO DATABASE:", token, "\n")
+                print("\nTOKEN DO DATABASE:", token, "\n")
                 return token
             else:
                 print(f"ERRO NA API DO DATABASE {response.status}: {await response.text()}")
@@ -205,12 +217,12 @@ async def test_api():
 
 
 
-        # await agents()
-        # await copilot()
-        # await chat()
-        # await search()
-        # await stt() 
-        # await tts()
+        await agents()
+        await copilot()
+        await chat()
+        await search()
+        await stt() 
+        await tts()
         token = await database() 
         if token:
             await list_db(token)

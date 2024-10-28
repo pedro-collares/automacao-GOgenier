@@ -12,7 +12,7 @@ import api
 
 def run(playwright: Playwright) -> None:
 
-    browser = playwright.chromium.launch(headless=False)
+    browser = playwright.chromium.launch(headless=True)
     context = browser.new_context(viewport={"width": 1870, "height": 880})
     page = context.new_page()
     page.goto("https://app.genier.ai/qa/")
@@ -26,14 +26,14 @@ def run(playwright: Playwright) -> None:
     # d.manage_data()
     # m.manage_model()
     # a.manage_agents()
-    p.play_ground()
-    d.remove_data()
-    m.reprocess()
-    p.talk_to_model()
+    # p.play_ground()
+    # d.remove_data()
+    # m.reprocess()
+    # p.talk_to_model()
 
     # c.change_llm()
     # c.change_password()
-    # api.test_api()
+    api.test_api()
 
     time.sleep(1200)
 
