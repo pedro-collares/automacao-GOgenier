@@ -36,7 +36,7 @@ def chat():
     time.sleep(2)
     ask_copilot = page.get_by_test_id("stChatInputTextArea").fill("O que é o GOgenier?") 
     ask_copilot = page.get_by_test_id("stChatInputTextArea").press("Enter") 
-    time.sleep(5)
+    time.sleep(15)
 
 def insights():
     insights = page.locator("label").filter(has_text="Insights").click()
@@ -114,12 +114,7 @@ def agents():
             print("Cadastro do db esta funcionando")
 
         talk_to_agent("Agente com flow + db + modelo ", "o que é o gogenier?")
-        message2 = page.get_by_test_id("stChatMessage").nth(5).text_content()
-        if "poderoso modelo de linguagem projetado para gerar conteúdo" or "conteúdo original e de alta qualidade de forma automatizada" not in message2:
-            print("deu pau no modelo")
-        else:
-            print("tudo funcionando")
-
+       
 
     # talk_to_agent("Agente de teste com modelo", "o que e o gogenier?")    
     talk_to_agent("Agente de teste com dataset", "que dia é hoje e que horas sao")

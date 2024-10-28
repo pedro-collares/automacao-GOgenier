@@ -2,8 +2,6 @@ import asyncio
 from playwright.async_api import async_playwright
 import os
 import base64
-import subprocess
-from playsound import playsound
 import io
 from pydub import AudioSegment
 from pydub.playback import play

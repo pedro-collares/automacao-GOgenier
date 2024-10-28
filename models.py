@@ -10,7 +10,8 @@ def select_model():
     page.get_by_label("Escolha um modelo").fill("Modelo de teste")
     page.get_by_label("Escolha um modelo").press("Enter")
 
-
+def menu(menu):
+       page.get_by_test_id("stSidebarUserContent").frame_locator("[data-testid=\"stCustomComponentV1\"]").get_by_role("link", name=menu).click() 
 
 def manage_model():
     page.get_by_test_id("stSidebarUserContent").frame_locator("[data-testid=\"stCustomComponentV1\"]").get_by_role("link", name=" Modelos").click()
@@ -56,8 +57,9 @@ def reprocess():
     page.get_by_test_id("stSidebarUserContent").frame_locator("[data-testid=\"stCustomComponentV1\"]").get_by_role("link", name=" Modelos").click()
     select_model()
     page.get_by_role("button", name="reset_settings icon").click()
-    time.sleep(60)
+    time.sleep(90)
     print("reprocessado")
+    menu("Modelos")
 
 
 def set_page(main_page):
