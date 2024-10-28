@@ -8,6 +8,7 @@ import playground as p
 import integration as i
 import config as c
 import login as l
+import api 
 
 def run(playwright: Playwright) -> None:
 
@@ -22,16 +23,17 @@ def run(playwright: Playwright) -> None:
 
     
     l.login("Automac@o123")
-    d.manage_data()
-    m.manage_model()
-    a.manage_agents()
+    # d.manage_data()
+    # m.manage_model()
+    # a.manage_agents()
     p.play_ground()
     d.remove_data()
     m.reprocess()
     p.talk_to_model()
 
-    c.change_llm()
-    c.change_password()
+    # c.change_llm()
+    # c.change_password()
+    # api.test_api()
 
     time.sleep(1200)
 
