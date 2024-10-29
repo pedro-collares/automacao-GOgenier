@@ -42,7 +42,7 @@ def new_pass(old_pass, new_pass):
 
 # Funcao que altera para nova senha, e troca novamente a senha do usuario
 def change_password():
-    # Altera a senha e da um logout
+    # Altera a senha e realiza logout
     menu("Configurações")
     page.get_by_role("tab", name="Usuários").click()
     new_pass("Automac@o123", "Automac@o321")    
