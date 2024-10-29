@@ -6,6 +6,13 @@ import io
 from pydub import AudioSegment
 from pydub.playback import play
 
+# ---------------------
+
+# Requests de API's de Agentes, Chat, Copilot, STT, TTS, Insights e Autenticação do banco de dados
+
+# ---------------------
+
+
 async def test_api():
     async with async_playwright() as p:
 

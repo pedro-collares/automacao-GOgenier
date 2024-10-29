@@ -4,32 +4,35 @@ import time
 
 page = None
 
+# Funcão que salva a "inteligencia" dos modelos
 def save_inteligence():
     save_buttons = page.locator("button[data-testid='stBaseButton-secondaryFormSubmit']").filter(has_text=re.compile(r"^save \d+$"))
     for i in range(save_buttons.count()):
         save_buttons.nth(i).click()
         page.wait_for_timeout(1000)
+        # Foi nescessário usar um loop pois na criacao de um agente com mais de uma inteligencia precisava que todas as inteligencias fossem salvas
 
 def menu(menu):
        page.get_by_test_id("stSidebarUserContent").frame_locator("[data-testid=\"stCustomComponentV1\"]").get_by_role("link", name=menu).click() 
 
-def press_enter():
-    page.get_by_label("Selected Fortics. Modelo").press("Enter")
-
-    
+# Botao de salvar o agente todo
 def save_agent():
     page.get_by_role("button", name="save icon Salvar").click()
     time.sleep(2)
 
-def description():
+# Seleciona o "Modelo de testes" e adiciona descrição 
+def config_model():
+    # seleciona o modelo
     page.locator("div").filter(has_text=re.compile(r"^Fortics$")).first.click()
     page.get_by_label("Selected Fortics. Modelo").fill("modelo de te")
     page.get_by_label("Selected Fortics. Modelo").press("Enter")
 
+    # adiciona descricao ao modelo
     page.get_by_test_id("stForm").get_by_label("Descrição").clear()
     page.get_by_test_id("stForm").get_by_label("Descrição").fill("Conteúdos sobre o GOgenier e Fortics")
     page.get_by_role("button", name="save icon 1").click()
 
+# Função que cria os agentes, nomeia e insere a api key da OpenAi
 def create_agent(name):
     menu("Agente")
     time.sleep(2)    
@@ -44,16 +47,18 @@ def create_agent(name):
     apikey = page.get_by_placeholder("<Cole aqui sua api_key>").fill("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")
     time.sleep(2)
     
+# Dita as "Regras e instruçoes finais" dos agentes
 def rules(rules):
     page.get_by_label("Outras regras e instruções").fill(rules)
 
+# Configura a consulta que o agente faz no banco de dados
 def consultation(field):
     consultation = page.get_by_role("button", name="manage_search icon").click()
-    # page.get_by_test_id("stDialog").get_by_test_id("stSelectbox").locator("div").filter(has_text="Escolha uma coleção").nth(2).click()
     collection = page.get_by_label("Coleção").fill(field)
     page.get_by_label("Coleção").press("Enter")
     save_collection = page.get_by_test_id("stBaseButton-secondary").click()
 
+# Configura aonde o agente registra o usuario no banco de dados
 def register():
     register = page.get_by_role("button", name="1 manage_search icon").click()
     collection = page.get_by_label("Coleção").fill("automation")
@@ -62,11 +67,12 @@ def register():
     page.get_by_label("Selecione os campos").press("Enter")
     save_collection = page.get_by_test_id("stBaseButton-secondary").click()
 
+#  Configura o proxy do flow
 def config_flow():
     page.get_by_label("Caminho (proxy)").fill("/playwright/")
     time.sleep(2)
 
-
+# Configura as inteligencias dos agentes, dentre todas as disponiveis
 def add_inteligence(inteligence, collection=None):
     page.get_by_label("Tipo de ação").fill(inteligence)
     page.get_by_label("Tipo de ação").press("Enter")
@@ -74,7 +80,7 @@ def add_inteligence(inteligence, collection=None):
 
     if inteligence == "Utilizar modelo":
         rules("Responda tudo que o usuário solicitar\n")
-        description()
+        config_model()
     elif inteligence == "Data e hora":
         rules("offset de -3")
     elif inteligence == "Busca em banco de da":
@@ -89,7 +95,7 @@ def add_inteligence(inteligence, collection=None):
     save_inteligence()
     
 
-
+# 'Template' de criar agente com modelo
 def create_agent_with_model():
     create_agent("Agente de teste com modelo")
     add_inteligence("Utilizar modelo")
@@ -97,7 +103,7 @@ def create_agent_with_model():
     menu("Home")
     time.sleep(3)
 
-
+# 'Template' de criar agente com dataset
 def create_agent_with_dataset():
     create_agent("Agente de teste com dataset")
     add_inteligence("Data e hora")
@@ -105,6 +111,7 @@ def create_agent_with_dataset():
     menu("Home")
     time.sleep(3)
 
+# 'Template' de criar agente com cadastro no banco de dados
 def create_agent_with_register_database():
     create_agent("Agente de cadastro database")
     add_inteligence("Busca em banco de da", "automation")
@@ -114,6 +121,7 @@ def create_agent_with_register_database():
     menu("Home")
     time.sleep(3)
 
+# 'Template' de criar agente com validação de cnpj
 def create_agent_with_cnpj():
     create_agent("Agente de teste CNPJ")
     add_inteligence("Validação de CN")
@@ -121,6 +129,7 @@ def create_agent_with_cnpj():
     menu("Home")
     time.sleep(3)
 
+# 'Template' de criar agente com Flow
 def create_agent_with_flow():
     create_agent("Agente de teste Flow")
     add_inteligence("Genier")
@@ -128,6 +137,7 @@ def create_agent_with_flow():
     menu("Home")
     time.sleep(3)
 
+# 'Template' de criar agente com modelo, cadastro no database e flow
 def agent_with_flow_db_model():
     create_agent("Agente com flow + db + modelo ")
     add_inteligence("Utilizar modelo")
@@ -141,7 +151,7 @@ def agent_with_flow_db_model():
     menu("Home")
     time.sleep(3)
 
-
+# Onde as funcoes sao chamadas e mandadas para main.py, o que esta comentado é o que nao fara parte do teste NO MOMENTO 
 def manage_agents():
     menu("Home")
     time.sleep(3)

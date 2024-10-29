@@ -5,17 +5,20 @@ import time
 page = None
 
 
-
+# Função que selecionado o modelo que foi criado
 def select_model():
     page.get_by_label("Escolha um modelo").fill("Modelo de teste")
     page.get_by_label("Escolha um modelo").press("Enter")
 
+# Função de alterar o menu
 def menu(menu):
        page.get_by_test_id("stSidebarUserContent").frame_locator("[data-testid=\"stCustomComponentV1\"]").get_by_role("link", name=menu).click() 
 
+# Função que faz o comando geral do modelo
 def manage_model():
-    page.get_by_test_id("stSidebarUserContent").frame_locator("[data-testid=\"stCustomComponentV1\"]").get_by_role("link", name=" Modelos").click()
-    
+    menu("Modelos")    
+
+    # Cria o modelo inicialmente
     def create_model():
         time.sleep(1)
         page.get_by_label("Nome do modelo").fill("Modelo de teste")
@@ -23,6 +26,7 @@ def manage_model():
         page.get_by_role("option", name="fonte de testes").click()
         page.get_by_test_id("stBaseButton-secondaryFormSubmit").click()
 
+        # Processa-o
         def process():
             time.sleep(5)
             select_model()
@@ -31,6 +35,7 @@ def manage_model():
 
         process()
 
+    # Loop para deletar modelos 
     def delete_model():
         while(True):
             try:
@@ -41,18 +46,11 @@ def manage_model():
             except Exception:
                 break
 
-
-    def modify_model():
-        select_model()
-        num_od_docs = page.get_by_test_id("stNumberInputStepUp").click()
-        page.get_by_role("button", name="save icon Salvar").click()
-
-        
-
+    # Chamada das funções
     create_model()
-    # modify_model()
     # delete_model()
 
+# Função que reprocessa o modelo
 def reprocess():
     page.get_by_test_id("stSidebarUserContent").frame_locator("[data-testid=\"stCustomComponentV1\"]").get_by_role("link", name=" Modelos").click()
     select_model()
