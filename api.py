@@ -140,7 +140,8 @@ async def test_api():
                     }
                 )
                     if response.status == 200:
-                        print("RESPOSTA DA API DO STT:", await response.json(), "\n")
+                        result_json = await response.json()
+                        print("RESPOSTA DA API DO STT:", result_json['result'], "\n")
                     else:   
                         print(f"ERRO NA API DO STT {response.status}: {await response.text()}")
             except Exception as e:
