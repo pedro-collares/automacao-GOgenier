@@ -18,7 +18,7 @@ def run(playwright: Playwright) -> None:
     page.goto("https://app.genier.ai/qa/")
 
     # For para aplicar a funcao set_page em todos os arquivos py
-    for j in [d,m,a,p,i,c,l]:
+    for j in [d,m,a,p,c,l]:
         j.set_page(page)
 
 # ---------------------

@@ -22,6 +22,7 @@ def change_llm():
     time.sleep(2)
     menu("Documentação")
     time.sleep(2)
+    
     # Retorna para OpenAI
     menu("Configurações")
     page.get_by_role("tab", name="Configurações avançadas").click()
