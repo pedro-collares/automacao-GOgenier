@@ -119,7 +119,8 @@ async def test_api():
 
         async def stt():
 
-            file_path = os.path.abspath("/home/pedro-collares/playwright/files/audio.flac")
+            current_dir = os.path.dirname(os.path.abspath(__file__))
+            file_path = os.path.join(current_dir, 'files', 'audio.flac')
 
             url = 'https://app.genier.ai/qa/api/stt_transcribe'
 
@@ -222,14 +223,14 @@ async def test_api():
 
 
 
-        await agents()
-        await copilot()
-        await chat()
-        await search()
+        # await agents()
+        # await copilot()
+        # await chat()
+        # await search()
         await stt() 
-        await tts()
-        token = await database() 
-        if token:
-            await list_db(token)
+        # await tts()
+        # token = await database() 
+        # if token:
+        #     await list_db(token)
 
 asyncio.run(test_api())
