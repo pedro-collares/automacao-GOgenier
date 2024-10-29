@@ -5,6 +5,7 @@ import os
 
 page = None
 
+# Função para navegar no menu lateral, clicando em um item específico
 def menu(menu):
        page.get_by_test_id("stSidebarUserContent").frame_locator("[data-testid=\"stCustomComponentV1\"]").get_by_role("link", name=menu).click() 
 

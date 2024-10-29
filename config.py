@@ -1,11 +1,11 @@
 import re
 from playwright.sync_api import Playwright, sync_playwright, expect
 import time
-import login as l
+from login import login 
 
 
 page = None
-
+# Função para navegar no menu lateral, clicando em um item específico
 def menu(menu):
        page.get_by_test_id("stSidebarUserContent").frame_locator("[data-testid=\"stCustomComponentV1\"]").get_by_role("link", name=menu).click() 
 
@@ -22,7 +22,7 @@ def change_llm():
     time.sleep(2)
     menu("Documentação")
     time.sleep(2)
-    
+
     # Retorna para OpenAI
     menu("Configurações")
     page.get_by_role("tab", name="Configurações avançadas").click()
@@ -49,7 +49,7 @@ def change_password():
     logout()
 
     # Loga novamente e troca para a senha original
-    l.login("Automac@o321")
+    login("Automac@o321")
     new_pass("Automac@o321", "Automac@o123")
 
 

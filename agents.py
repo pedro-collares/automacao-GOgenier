@@ -12,6 +12,7 @@ def save_inteligence():
         page.wait_for_timeout(1000)
         # Foi nescessário usar um loop pois na criacao de um agente com mais de uma inteligencia precisava que todas as inteligencias fossem salvas
 
+# Função para navegar no menu lateral, clicando em um item específico
 def menu(menu):
        page.get_by_test_id("stSidebarUserContent").frame_locator("[data-testid=\"stCustomComponentV1\"]").get_by_role("link", name=menu).click() 
 

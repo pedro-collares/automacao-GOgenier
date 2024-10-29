@@ -10,7 +10,7 @@ def select_model():
     page.get_by_label("Escolha um modelo").fill("Modelo de teste")
     page.get_by_label("Escolha um modelo").press("Enter")
 
-# Função de alterar o menu
+# Função para navegar no menu lateral, clicando em um item específico
 def menu(menu):
        page.get_by_test_id("stSidebarUserContent").frame_locator("[data-testid=\"stCustomComponentV1\"]").get_by_role("link", name=menu).click() 
 
