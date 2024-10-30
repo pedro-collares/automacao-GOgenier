@@ -161,12 +161,12 @@ def manage_agents():
     time.sleep(3)
     menu("Agente")
 
-    # create_agent_with_model()
-    create_agent_with_dataset()
-    # create_agent_with_register_database()
+    create_agent_with_model()
+    # create_agent_with_dataset()
+    create_agent_with_register_database()
     create_agent_with_cnpj()
     # create_agent_with_flow()
-    agent_with_flow_db_model()
+    # agent_with_flow_db_model()
 
 
 

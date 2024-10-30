@@ -126,13 +126,13 @@ def agents():
        
 
     # Chamada das funções que falam com os agentes
-    talk_to_agent("Agente de teste com dataset", "que dia é hoje e que horas sao")
+    # talk_to_agent("Agente de teste com dataset", "que dia é hoje e que horas sao")
     talk_to_agent("Agente de teste CNPJ", "valide o cnpj: 54.463.890/0001-05")
-    talk_agent_with_flow_db_model()
+    # talk_agent_with_flow_db_model()
     
     #  Sugestões de conversas com outros agentes:
-    # talk_to_agent("Agente de teste com modelo", "o que e o gogenier?")    
-    # talk_to_db("Agente de cadastro database")
+    talk_to_agent("Agente de teste com modelo", "o que e o gogenier?")    
+    talk_to_db("Agente de cadastro database")
     # talk_to_flow("Agente de teste Flow")
 
 

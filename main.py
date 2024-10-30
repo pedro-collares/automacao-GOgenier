@@ -1,12 +1,12 @@
 import re
 from playwright.sync_api import Playwright, sync_playwright, expect
 import time
-import data_source as d
-import models as m
-import agents as a
-import playground as p
-import config as c
-import login as l
+import data_source
+import models
+import agents 
+import playground 
+import config 
+import login
 from config import logout
 import api 
 
@@ -17,9 +17,13 @@ def run(playwright: Playwright) -> None:
     page = context.new_page()
     page.goto("https://app.genier.ai/qa/")
 
-    # For para aplicar a funcao set_page em todos os arquivos py
-    for j in [d,m,a,p,c,l]:
-        j.set_page(page)
+    # Aplicando a função setpage em todos os arquivos
+    data_source.set_page(page)
+    models.set_page(page)
+    agents.set_page(page)
+    playground.set_page(page)
+    config.set_page(page)
+    login.set_page(page)
 
 # ---------------------
 
@@ -41,16 +45,16 @@ def run(playwright: Playwright) -> None:
 
 
     # Chamada das funções que executam as ações, logar, mexer na fonte de dados, mexer nos modelos e etc...
-    l.login("Automac@o123")
-    d.manage_data()
-    m.manage_model()
-    a.manage_agents()
-    p.play_ground()
-    d.remove_data()
-    m.reprocess()
-    p.talk_to_model()
-    c.change_llm()
-    c.change_password()
+    login.login("Automac@o123")
+    data_source.manage_data()
+    models.manage_model()
+    agents.manage_agents()
+    playground.play_ground()
+    data_source.remove_data()
+    models.reprocess()
+    playground.talk_to_model()
+    config.change_llm()
+    config.change_password()
     logout()
 
     # Timer pro navegador nao fechar diretamente
