@@ -224,14 +224,14 @@ async def test_api():
 
 
 
-        # await agents()
-        # await copilot()
-        # await chat()
-        # await search()
+        await agents()
+        await copilot()
+        await chat()
+        await search()
         await stt() 
-        # await tts()
-        # token = await database() 
-        # if token:
-        #     await list_db(token)
+        await tts()
+        token = await database() 
+        if token:
+            await list_db(token)
 
 asyncio.run(test_api())

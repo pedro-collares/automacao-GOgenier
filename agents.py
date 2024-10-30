@@ -18,8 +18,11 @@ def menu(menu):
 
 # Botao de salvar o agente todo
 def save_agent():
-    page.get_by_role("button", name="save icon Salvar").click()
-    time.sleep(2)
+    try:
+        page.get_by_role("button", name="save icon Salvar").click()
+        time.sleep(2)
+    except Exception as e:
+        print(f"Erro ao salvar o agente: {e}")
 
 # Seleciona o "Modelo de testes" e adiciona descrição 
 def config_model():
