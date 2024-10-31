@@ -1,4 +1,5 @@
 import asyncio
+import json
 from playwright.async_api import async_playwright
 import os
 import base64
@@ -219,19 +220,54 @@ async def test_api():
             else:
                 print(f"ERRO NA API DO DATABASE {response.status}: {await response.text()}")
 
+        async def agent_multimodal():
+
+            current_dir = os.path.dirname(os.path.abspath(__file__))
+            file_path = os.path.join(current_dir, 'files', 'golf_gti.mp3')
+    
+            request_context = await p.request.new_context()
+
+            url = "https://app.genier.ai/qa/api/agent_mm/agent_40814927-2e7c-4742-b323-2ba7750c82b2"
+
+            headers = {
+                "Authorization": "17fe10f1-35a0-47cc-a631-9d33f408961a"
+            }
+            try:
+                with open(file_path,'rb') as audio_file:
+                    response = await request_context.post(
+                        url,
+                        headers=headers,
+                        multipart={ 
+                           'history': ('history', '[]', 'application/json'), 
+                           'audio': ('golf_gti.mp3', audio_file, 'audio/mpeg'), 
+                           'tts': ('tts', 'true')
+                            }
+                    )
+
+                  
+                if response ==200:
+                    print("Resposta em audio do agente")
+                    json_response = await response.json() 
+                    audio_base64 = json_response.get("tts_audio_mp3_encoded_base64") 
+                    audio_bytes = base64.b64decode(audio_base64)
+
+                    audio = AudioSegment.from_file(io.BytesIO(audio_bytes), format="mp3")
+                    play(audio)
+                else:
+                    print(f"ERRO NA API DO AGENTE MULTIMODAL {response.status}: {await response.text()}")
+            except Exception as e:
+                print(f"Erro ao enviar arquivo {e}")
 
 
-
-
-
-        await agents()
-        await copilot()
-        await chat()
-        await search()
-        await stt() 
-        await tts()
-        token = await database() 
-        if token:
-            await list_db(token)
+        # await agents()  	
+        # await copilot()
+        # await chat()
+        # await search()
+        # await stt() 
+        # await tts()
+        # token = await database() 
+        # if token:
+        #     await list_db(token)
+        await agent_multimodal()
 
 asyncio.run(test_api())
