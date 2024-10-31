@@ -221,6 +221,8 @@ async def test_api():
             else:
                 print(f"ERRO NA API DO DATABASE {response.status}: {await response.text()}")
 
+
+
         async def agent_multimodal():
             current_dir = os.path.dirname(os.path.abspath(__file__))
             file_path = os.path.join(current_dir, 'files', 'golf_gti.mp3')
