@@ -235,12 +235,12 @@ async def test_api():
 
             try:
                 with open(file_path, 'rb') as audio:
-                    multipart = { 
+                    files = { 
                     	'history': (None, history_json, 'application/json'),
                     	'audio': ('golf.gti.mp3', audio, 'audio/mpeg'),
                     	'tts': (None, 'true')
                     }
-                    response = requests.post(url, headers=headers, files=multipart)
+                    response = requests.post(url, headers=headers, files=files)
                 
                 if response.status_code == 200 :
                     audio_base64 = response.json().get("tts_audio_mp3_encoded_base64") 
