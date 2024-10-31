@@ -6,6 +6,7 @@ import base64
 import io
 from pydub import AudioSegment
 from pydub.playback import play
+import requests
 
 # ---------------------
 
@@ -221,40 +222,34 @@ async def test_api():
                 print(f"ERRO NA API DO DATABASE {response.status}: {await response.text()}")
 
         async def agent_multimodal():
-
             current_dir = os.path.dirname(os.path.abspath(__file__))
             file_path = os.path.join(current_dir, 'files', 'golf_gti.mp3')
-    
-            request_context = await p.request.new_context()
 
             url = "https://app.genier.ai/qa/api/agent_mm/agent_40814927-2e7c-4742-b323-2ba7750c82b2"
 
             headers = {
                 "Authorization": "17fe10f1-35a0-47cc-a631-9d33f408961a"
             }
+
+            history_json = json.dumps([]) 
+
             try:
-                with open(file_path,'rb') as audio_file:
-                    response = await request_context.post(
-                        url,
-                        headers=headers,
-                        multipart={ 
-                           'history': ('history', '[]', 'application/json'), 
-                           'audio': ('golf_gti.mp3', audio_file, 'audio/mpeg'), 
-                           'tts': ('tts', 'true')
-                            }
-                    )
-
-                  
-                if response ==200:
-                    print("Resposta em audio do agente")
-                    json_response = await response.json() 
-                    audio_base64 = json_response.get("tts_audio_mp3_encoded_base64") 
+                with open(file_path, 'rb') as audio:
+                    multipart = { 
+                    	'history': (None, history_json, 'application/json'),
+                    	'audio': ('golf.gti.mp3', audio, 'audio/mpeg'),
+                    	'tts': (None, 'true')
+                    }
+                    response = requests.post(url, headers=headers, files=multipart)
+                
+                if response.status_code == 200 :
+                    audio_base64 = response.json().get("tts_audio_mp3_encoded_base64") 
                     audio_bytes = base64.b64decode(audio_base64)
-
+                
                     audio = AudioSegment.from_file(io.BytesIO(audio_bytes), format="mp3")
                     play(audio)
                 else:
-                    print(f"ERRO NA API DO AGENTE MULTIMODAL {response.status}: {await response.text()}")
+                    print(f"Erro na API do agente multimodal {response.status_code}")
             except Exception as e:
                 print(f"Erro ao enviar arquivo {e}")
 
