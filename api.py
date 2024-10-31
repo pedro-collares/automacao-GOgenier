@@ -256,15 +256,15 @@ async def test_api():
                 print(f"Erro ao enviar arquivo {e}")
 
 
-        # await agents()  	
-        # await copilot()
-        # await chat()
-        # await search()
-        # await stt() 
-        # await tts()
-        # token = await database() 
-        # if token:
-        #     await list_db(token)
+        await agents()  	
+        await copilot()
+        await chat()
+        await search()
+        await stt() 
+        await tts()
+        token = await database() 
+        if token:
+            await list_db(token)
         await agent_multimodal()
 
 asyncio.run(test_api())
