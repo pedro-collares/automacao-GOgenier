@@ -14,8 +14,11 @@ def run(playwright: Playwright) -> None:
     #  Acessando o navegador Chromium para realizar os testes 
     browser = playwright.chromium.launch(headless=False)
     context = browser.new_context(viewport={"width": 1870, "height": 880})
+    
     page = context.new_page()
     page.goto("https://app.genier.ai/qa/")
+    
+    
 
     # Aplicando a função setpage em todos os arquivos
     data_source.set_page(page)
