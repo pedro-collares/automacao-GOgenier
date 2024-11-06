@@ -245,6 +245,7 @@ async def test_api():
                     response = requests.post(url, headers=headers, files=files)
                 
                 if response.status_code == 200 :
+                    print("AUDIO TRANSCRITO: \n")
                     audio_base64 = response.json().get("tts_audio_mp3_encoded_base64") 
                     audio_bytes = base64.b64decode(audio_base64)
                 
