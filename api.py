@@ -37,9 +37,9 @@ async def test_api():
 
             if response.status == 200:
                 json_response = await response.json()
-                print("REPOSTA DA API DO AGENTE:", json_response['history'][0]['output'], "\n")
+                print("(1/9) - REPOSTA DA API DO AGENTE:", json_response['history'][0]['output'], "\n")
             else:
-                print(f"ERRO DA NA API DO AGENTE {response.status}: {await response.text()}", "\n")
+                print(f"(1/9) - ERRO DA NA API DO AGENTE {response.status}: {await response.text()}", "\n")
         
 
         async def copilot():
@@ -64,9 +64,9 @@ async def test_api():
 
             if response.status == 200:
                 json_response = await response.json()    
-                print("RESPOSTA DA API DO COPILOT:", json_response['response'], "\n")
+                print("(2/9) - RESPOSTA DA API DO COPILOT:", json_response['response'], "\n")
             else:
-                print(f"ERRO NA API DO COPILOT {response.status}: {await response.text()}")
+                print(f"(2/9) - ERRO NA API DO COPILOT {response.status}: {await response.text()}")
 
         async def chat():
             request_context = await p.request.new_context()
@@ -90,9 +90,9 @@ async def test_api():
 
             if response.status == 200: 
                 json_response = await response.json()    
-                print("RESPOSTA DA API DO CHAT:", json_response['response'], "\n")
+                print("(3/9) - RESPOSTA DA API DO CHAT:", json_response['response'], "\n")
             else:
-                print(f"ERRO NA API DO CHAT {response.status}: {await response.text()}")
+                print(f"(3/9) - ERRO NA API DO CHAT {response.status}: {await response.text()}")
 
         async def search():
             request_context = await p.request.new_context()
@@ -114,9 +114,9 @@ async def test_api():
             response = await request_context.post(url, headers=headers, data=data)
 
             if response.status == 200: 
-                print("RESPOSTA DA API DO SEARCH:", await response.json(), "\n")
+                print("(4/9) - RESPOSTA DA API DO SEARCH:", await response.json(), "\n")
             else:
-                print(f"ERRO NA API DO SEARCH {response.status}: {await response.text()}")
+                print(f"(4/9) - ERRO NA API DO SEARCH {response.status}: {await response.text()}")
 
 
         async def stt():
@@ -143,9 +143,9 @@ async def test_api():
                 )
                     if response.status == 200:
                         result_json = await response.json()
-                        print("RESPOSTA DA API DO STT:", result_json['result'], "\n")
+                        print("(5/9) - RESPOSTA DA API DO STT:", result_json['result'], "\n")
                     else:   
-                        print(f"ERRO NA API DO STT {response.status}: {await response.text()}")
+                        print(f"(5/9) - ERRO NA API DO STT {response.status}: {await response.text()}")
             except Exception as e:
                 print(f'Erro ao enviar o arquivo {e}')
 
@@ -166,7 +166,7 @@ async def test_api():
             response = await request_context.post(url, headers=headers, data=data)
 
             if response.status == 200: 
-                print("AUDIO TRANSCRITO: \n")
+                print("(6/9) - AUDIO TRANSCRITO: \n")
                 json_response = await response.json() 
                 audio_base64 = json_response.get("audio_content_base64") 
                 audio_bytes = base64.b64decode(audio_base64)
@@ -175,7 +175,7 @@ async def test_api():
                 play(audio)
 
             else:
-                print(f"ERRO NA API DO TTS {response.status}: {await response.text()}")
+                print(f"(6/9) - ERRO NA API DO TTS {response.status}: {await response.text()}")
 
         async def database():
             request_context = await p.request.new_context()
@@ -197,10 +197,10 @@ async def test_api():
             if response.status == 200: 
                 json_response = await response.json()
                 token = json_response.get("token")  
-                print("\nTOKEN DO DATABASE:", token, "\n")
+                print("\n (7/9) - TOKEN DO DATABASE:", token, "\n")
                 return token
             else:
-                print(f"ERRO NA API DO DATABASE {response.status}: {await response.text()}")
+                print(f"(7/9) - ERRO NA API DO DATABASE {response.status}: {await response.text()}")
                 return None
 
 
@@ -217,9 +217,9 @@ async def test_api():
             response = await request_context.get(url, headers=headers)
 
             if response.status == 200: 
-                print("CONSULTA DO DATABASE:", await response.json() , "\n")
+                print("(8/9) - CONSULTA DO DATABASE:", await response.json() , "\n")
             else:
-                print(f"ERRO NA API DO DATABASE {response.status}: {await response.text()}")
+                print(f"(8/9) - ERRO NA API DO DATABASE {response.status}: {await response.text()}")
 
 
 
@@ -245,14 +245,14 @@ async def test_api():
                     response = requests.post(url, headers=headers, files=files)
                 
                 if response.status_code == 200 :
-                    print("AUDIO TRANSCRITO: \n")
+                    print("(9/9) - AUDIO TRANSCRITO: \n")
                     audio_base64 = response.json().get("tts_audio_mp3_encoded_base64") 
                     audio_bytes = base64.b64decode(audio_base64)
                 
                     audio = AudioSegment.from_file(io.BytesIO(audio_bytes), format="mp3")
                     play(audio)
                 else:
-                    print(f"Erro na API do agente multimodal {response.status_code}")
+                    print(f"(9/9) - Erro na API do agente multimodal {response.status_code}")
             except Exception as e:
                 print(f"Erro ao enviar arquivo {e}")
 
