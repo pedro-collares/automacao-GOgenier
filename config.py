@@ -27,7 +27,7 @@ def change_llm():
     menu("Configurações")
     time.sleep(3)
     page.get_by_role("tab", name="Configurações avançadas").click()
-    page.get_by_test_id("stRadio").locator("label").filter(has_text="OpenAI").click()
+    page.get_by_label("Escolha o LLM utilizado na").locator("label").filter(has_text="OpenAI").click()
     page.get_by_role("button", name="Salvar").click()
     time.sleep(2)
 
